@@ -1,0 +1,96 @@
+{
+  "name": "iam-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/iam-ui/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/packages/iam-ui",
+        "index": "packages/iam-ui/src/index.html",
+        "baseHref": "/",
+        "main": "packages/iam-ui/src/main.tsx",
+        "tsConfig": "packages/iam-ui/tsconfig.app.json",
+        "assets": [
+          "packages/iam-ui/src/favicon.ico",
+          "packages/iam-ui/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "isolatedConfig": true,
+        "webpackConfig": "packages/iam-ui/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "packages/iam-ui/src/environments/environment.ts",
+              "with": "packages/iam-ui/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "iam-ui:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "iam-ui:build:development"
+        },
+        "production": {
+          "buildTarget": "iam-ui:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/iam-ui/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "iam-ui:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/iam-ui/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

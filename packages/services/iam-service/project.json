@@ -1,0 +1,64 @@
+{
+  "name": "services-iam-service",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/services/iam-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/packages/services/iam-service",
+        "main": "packages/services/iam-service/src/main.ts",
+        "tsConfig": "packages/services/iam-service/tsconfig.app.json",
+        "assets": ["packages/services/iam-service/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "packages/services/iam-service/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "services-iam-service:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "services-iam-service:build:development"
+        },
+        "production": {
+          "buildTarget": "services-iam-service:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/services/iam-service/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/services/iam-service/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
