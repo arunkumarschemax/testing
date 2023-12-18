@@ -1,4 +1,3 @@
-import { Exclude } from "class-transformer";
 import { Column, Entity, OneToOne } from "typeorm";
 import { AbstractEntity } from "../../../database/common-entities";
 import { UserEntity } from "../../users/entities/users.entity";
@@ -23,33 +22,32 @@ export class AuthenticationEntity extends AbstractEntity {
     })
     password: string;
 
-    @Column('boolean', { name: 'is_email_verified' })
+    @Column('boolean', { name: 'is_email_verified' ,nullable:true})
     isEmailVerified: boolean;
 
-    @Column('int', { name: 'no_of_failed_login' })
+    @Column('int', { name: 'no_of_failed_login',nullable:true })
     noOfFailedLogin: number;
 
     @Column('datetime', {
-        name: 'account_locked_on'
+        name: 'account_locked_on',nullable:true
     })
     accountLockedOn: string;
 
-    @Column('varchar', { name: 'sent_otp', length: 255 })
+    @Column('varchar', { name: 'sent_otp', length: 255 ,nullable:true})
     sentOtp: string;
 
-    @Column('datetime', { name: 'otp_sent_time' })
+    @Column('datetime', { name: 'otp_sent_time',nullable:true })
     otpSentTime: string;
 
-    @Column('datetime', { name: 'otp_expiry_time' })
+    @Column('datetime', { name: 'otp_expiry_time',nullable:true })
     otpExpiryTime: string;
 
-    @Column('varchar', { name: 'salt' })
+    @Column('varchar', { name: 'salt',nullable:true })
     salt: string;
 
-    @Column('varchar', { name: 'hashed_refresh_token' })
+    @Column('varchar', { name: 'hashed_refresh_token',nullable:true })
     hashedRefreshToken: string;
 
     @OneToOne(() => UserEntity, (user: UserEntity) => user.authentication)
-    @Exclude()
-    public user: UserEntity;
+    user: UserEntity;
 }

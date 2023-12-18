@@ -1,38 +1,44 @@
-import { Card, Button, Drawer } from 'antd';
+import { GetAllAttributeDto } from '@finestchoicex-iam/shared-models';
+import { AttributeService } from '@finestchoicex-iam/shared-services';
+import { Button, Card, Drawer } from 'antd';
 import { useEffect, useState } from 'react';
+import AttributeForm from './attribute-form';
 import { AttributeGrid } from './attribute-grid';
-import AttributeForm, { Attributes } from './attribute-form';
 
-export const OrganisationPage = () => {
+export const AttributePage = () => {
     const [showForm, setShowForm] = useState(false);
-    const [orgData, setOrgData] = useState<Attributes[]>([]);
+    const [attributeData, setAttributeData] = useState<GetAllAttributeDto[]>([]);
+    const attributesService = new AttributeService();
+    const [initialValues, setInitialValues] = useState<GetAllAttributeDto>();
+    const [dummyRefresh, setDummyRefresh] = useState<number>(0);
+
+
 
     useEffect(() => {
-        getAllOrganisations();
+        getAllAttributes();
     }, []);
 
-    const getAllOrganisations = () => {
-        setOrgData([new Attributes(1, 'banu')]);
-    }
-
-
-
-    const handleSubmit = (req: Attributes) => {
-        closeButtonHandler();
-        getAllOrganisations();
-    }
+    const getAllAttributes = () => {
+        attributesService.getAllAttributes().then(res => {
+            if (res.status) {
+                setAttributeData(res.data);
+            }
+        }).catch(err => console.log(err.message, 'err message'))
+    };
 
     const createButtonHandler = () => {
         setShowForm(true);
-    }
+        setDummyRefresh(prev => prev + 1);
+    };
 
     const closeButtonHandler = () => {
         setShowForm(false);
-    }
+        setDummyRefresh(prev => prev + 1);
+    };
     return (
         <>
-            <Card title='Clients' extra={<Button onClick={createButtonHandler}>Create</Button>}>
-                <AttributeGrid attributeData={orgData} />
+            <Card title='Attributes' extra={<Button type='primary' onClick={createButtonHandler}>Create</Button>}>
+                <AttributeGrid attributeData={attributeData} setInitialValues={setInitialValues} createButtonHandler={createButtonHandler} getAllAttributes={getAllAttributes} />
             </Card>
             <Drawer
                 title={'Client'}
@@ -40,10 +46,10 @@ export const OrganisationPage = () => {
                 onClose={closeButtonHandler}
                 width='50%'
             >
-                <AttributeForm handleSubmit={handleSubmit} />
+                <AttributeForm key={dummyRefresh} initialValues={initialValues} getAllAttributes={getAllAttributes} closeButtonHandler={closeButtonHandler} />
             </Drawer>
         </>
     )
 }
 
-export default OrganisationPage
+export default AttributePage;

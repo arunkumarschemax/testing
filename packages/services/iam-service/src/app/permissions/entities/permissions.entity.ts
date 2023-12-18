@@ -1,18 +1,37 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/common-entities";
-import { UserPermissions } from "../../user_permissions/entities/user_permissions.entity";
+import { ScopesEntity } from "../../scopes/entites/scopes.entity";
+import { RolePermissionEntity } from "../../role-permissions/entities/role-permissions.entity";
+import { SubMenuEntity } from "../../sub-menus/entities/sub-menus.entity";
+import { ApplicationEntity } from "../../applications/entities/application.entity";
+import { ModulesEntity } from "../../modules/entities/modules.entity";
+import { UserPermissionEntity } from "../../user-permissions/entities/user-permissions.entity";
 
-@Entity('permissons')
+@Entity('permissions')
+export class PermissionsEntity extends AbstractEntity {
+    @Column('varchar', { name: 'name', length: 255 })
+    name: string;
 
-export class PermissionsEntity extends AbstractEntity{
-    @Column('varchar',{name:'name',length:255})
-    name:string;
+    @ManyToOne(() => ScopesEntity, (scope) => scope.permissions)
+    @JoinColumn({ name: "scope_id" })
+    scope: ScopesEntity;
 
-    @Column('varchar',{name:'scope_id',length:11})
-    scope_id: number;
+    @ManyToOne(() => SubMenuEntity, (menu) => menu.permissions, { nullable: false })
+    @JoinColumn({ name: "sub_menu_id" })
+    subMenu: SubMenuEntity;
 
+    @ManyToOne(type => ApplicationEntity, app => app.subMenus, { nullable: false })
+    @JoinColumn({ name: 'application_id' })
+    application: ApplicationEntity;
 
-    // @OneToMany(()=> UserPermissions,(up)=>up.permissions)
-    // permissions_id: UserPermissions;
-   
+    @ManyToOne(type => ModulesEntity, module => module.permissions, { nullable: false })
+    @JoinColumn({ name: 'module_id' })
+    module: ModulesEntity;
+
+    @OneToMany(() => RolePermissionEntity, (rolePerm) => rolePerm.permission)
+    rolePermissions: RolePermissionEntity[];
+
+    @OneToMany(() => UserPermissionEntity, (userPerm) => userPerm.user)
+    userPermissions: UserPermissionEntity[];
+
 }

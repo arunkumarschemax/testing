@@ -1,51 +1,87 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { ModulesEntity } from './entities/modules.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { ApplicationIdReqDto, CommonResponse, ModulesDropDownDto, GetAllModulesDropDownResponse, GetAllModulesResponse, GlobalResponseObject, ModuleDto, ModulesIdReqDto } from '@finestchoicex-iam/shared-models';
+import { ModulesRepository } from './repositorys/module.repo';
+import { ModulesAdapter } from './modules-adapter';
+import { ApplicationEntity } from '../applications/entities/application.entity';
+
 
 @Injectable()
 export class ModulesService {
   constructor(
-    @InjectRepository(ModulesEntity)
-    private modulesdataRepo: Repository<ModulesEntity>
+    private modulesRepo: ModulesRepository,
+    private modulesAdapter: ModulesAdapter
   ) {
 
   }
-  async create(createDto: any): Promise<any> {
-    // const conversion=this. modulesAdapter.convertDtoToEntity(createDto);
-    // console.log(createDto,"?????????????")
-    // const saving = await this.modulesdataRepo.save(conversion)
-    // return saving
-
-  }
-
-  async getAllModules(): Promise<any> {
-    const getalldata = await this.modulesdataRepo.find();
-    console.log(getalldata)
-    return getalldata;
-  }
 
 
-  async getModulesById(id): Promise<any> {
-    const getall = await this.modulesdataRepo.findOne({ where: { id: id } });
-    console.log(getall)
-    return getall;
-  }
-  async activateOrDeactivate(createDto: any): Promise<any> {
-    const findRecord = await this.modulesdataRepo.findOne({ where: { id: createDto.id } }); //true or  //false
-    if (!findRecord) {
-      throw new Error("Data Not Found")
-    } else {
-      await this.modulesdataRepo.update({ id: createDto.id }, { isActive: !findRecord.isActive }); //false or //true
+  async create(createDto: ModuleDto): Promise<CommonResponse> {
+    const conversion = this.modulesAdapter.convertDtoToEntity(createDto);
+    const saving = await this.modulesRepo.save(conversion);
+    return new CommonResponse(true, 1234, 'created successfully', saving);
+  };
+
+  async getAllModules(): Promise<GetAllModulesResponse> {
+    const getAll = await this.modulesRepo.find({ relations: ['application'] });
+    const getData: ModuleDto[] = [];
+    for (const app of getAll) {
+      const data = this.modulesAdapter.convertEntityToDto(app);
+      getData.push(data);
     }
 
+    if (getData.length === 0) {
+      return new GlobalResponseObject(false, 123, 'No Data Found');
+    }
+    return new GetAllModulesResponse(true, 1234, "Data Retrieved Successfully", getData)
+  };
 
+
+  async getAllModulesByAppId(req: ApplicationIdReqDto): Promise<GetAllModulesResponse> {
+    const app = new ApplicationEntity();
+    app.id = req.applicationId;
+    const getAll = await this.modulesRepo.find({ where: { application: app }, relations: ['application'] });
+    const getData: ModuleDto[] = [];
+    for (const app of getAll) {
+      const data = this.modulesAdapter.convertEntityToDto(app);
+      getData.push(data);
+    }
+    if (getData.length === 0) {
+      return new GlobalResponseObject(false, 123, 'No Data Found');
+    }
+    return new GetAllModulesResponse(true, 1234, "Data Retrieved Successfully", getData)
+  };
+
+  async activateOrDeactivate(deactivateDto: ModulesIdReqDto): Promise<CommonResponse> {
+    const deactivate = await this.modulesRepo.findOne({ where: { id: deactivateDto.moduleId } });
+    const activate = await this.modulesRepo.update({ id: deactivateDto.moduleId }, { isActive: deactivate.isActive === true ? false : true })
+    return new CommonResponse(true, 1234, `Status ${deactivate.isActive ? 'Deactivated' : 'Activated'} successfully`);
   }
-  async getModulesAllDropDown(): Promise<any> {
-    const getData = await this.modulesdataRepo.find({ select: ['name', 'id'] });
-    console.log(getData);
-    return getData
 
+
+  async getAllModulesDropDown(): Promise<GetAllModulesDropDownResponse> {
+    const getAll = await this.modulesRepo.find();
+    const getData: ModulesDropDownDto[] = [];
+    for (const app of getAll) {
+      const data = this.modulesAdapter.convertDropDownEntityToDto(app);
+      getData.push(data);
+    }
+    return new GetAllModulesDropDownResponse(true, 5675, "Data Retrieved Successfully", getData)
+  }
+
+  async getAllModulesDropDownByAppId(req: ApplicationIdReqDto): Promise<GetAllModulesDropDownResponse> {
+    const app = new ApplicationEntity();
+    app.id = req.applicationId;
+    const getAll = await this.modulesRepo.find({ where: { application: app }, relations: ['application'] });
+    const getData: ModulesDropDownDto[] = [];
+    for (const app of getAll) {
+      const data = this.modulesAdapter.convertDropDownEntityToDto(app);
+      getData.push(data);
+    }
+    return new GetAllModulesDropDownResponse(true, 5675, "Data Retrieved Successfully", getData)
   }
 
 }
+
+
+
+

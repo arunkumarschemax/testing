@@ -1,9 +1,11 @@
 import { Column, Entity, OneToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/common-entities";
-import { Units } from "../../units/enties/units.entity";
+import { ClientAppsEntity } from "../../client-applications/entitys/client-apps.entity";
+import { UnitEntity } from "../../units/entities/units.entity";
+import { UserEntity } from "../../users/entities/users.entity";
 
-@Entity('organization')
-export class Organization extends AbstractEntity {
+@Entity('client')
+export class Client extends AbstractEntity {
 
     @Column('varchar', { name: 'name', length: 255 })
     name: string;
@@ -11,6 +13,12 @@ export class Organization extends AbstractEntity {
     @Column('varchar', { name: 'description', length: 255 })
     description: string;
 
-    @OneToMany(() => Units, (units: Units) => units.organization)
-    public units: Units[];
+    @OneToMany(() => UnitEntity, (units: UnitEntity) => units.client)
+    units: UnitEntity[];
+
+    @OneToMany(() => ClientAppsEntity, (units: ClientAppsEntity) => units.client)
+    clientApps: ClientAppsEntity[];
+
+    @OneToMany(() => UserEntity, (units: UserEntity) => units.client)
+    user: UserEntity[];
 }

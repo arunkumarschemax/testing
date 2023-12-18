@@ -6,7 +6,7 @@ export class AttributesEntity extends AbstractEntity {
     @Column('varchar', {
         name: 'attribute_name',
         length: 40,
-        nullable: true
+        nullable: false
     })
     attributeName: string;
 }

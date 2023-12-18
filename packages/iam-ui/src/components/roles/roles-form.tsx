@@ -1,76 +1,107 @@
 
-import { Button, Card, Col, Form, Input, Row } from 'antd'
-
-export class RolesModel {
-    id: number;
-    name: string;
-    description: string;
-    unitId:number;
-    constructor(id: number, name: string, description: string,unitId:number) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.unitId=unitId;
-    }
-}
+import { CreateRolesDto, GetAllRolesDto, GetAllUnitDropDownDto, UnitIdDto } from '@finestchoicex-iam/shared-models';
+import { RolesService, UnitsService } from '@finestchoicex-iam/shared-services';
+import { Button, Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { AlertMessages } from '../../common/notifications';
+import { useEffect, useState } from 'react';
+import { useAuthState } from '../../common/auth-context';
+import { useTranslation } from 'react-i18next';
 
 
 interface IRolesFormProps {
-    submitHandler: (req: RolesModel) => void
+    initialValues: GetAllRolesDto;
+    // getAllRoles: () => void;
+    closeButtonHandler: () => void;
+    SelectedUnitsData: any[];
 }
 
 export const RolesForm = (props: IRolesFormProps) => {
     const [formRef] = Form.useForm();
-    const { submitHandler } = props;
+    const { authContext } = useAuthState();
+    const { Option } = Select;
+    const rolesService = new RolesService();
+    const { initialValues, closeButtonHandler,SelectedUnitsData } = props;
+    const [unitsData, setUnitsData] = useState<GetAllUnitDropDownDto[]>([])
+    const unitService = new UnitsService();
+    const { t } = useTranslation();
 
+    useEffect(() => {
+        getUnitsForDropDown(authContext.user.id)
+    }, [])
 
     const onSubmit = () => {
-        formRef.validateFields().then(values => {
-            const req = new RolesModel(values.id, values.name, values.description,values.unitId);
-            submitHandler(req);
+        formRef.validateFields().then((values: CreateRolesDto) => {
+            console.log(values, 'values')
+            const req = new CreateRolesDto(values.roleName, Number(values.unitId), values.description, values.rolesId, values.versionFlag);
+            rolesService.createRoles(req).then(res => {
+                if (res.status) {
+                    AlertMessages.getSuccessMessage(res.internalMessage);
+                    // getAllRoles();
+                    closeButtonHandler();
+                } else {
+                    AlertMessages.getErrorMessage(res.internalMessage);
+                };
+            });
         }).catch(err => {
-            console.log(err.message,'error msg')
-        })
+            console.log(err.message, 'error msg')
+        });
+    };
+
+    const getUnitsForDropDown = (req: UnitIdDto) => {
+        unitService.getAllUnitsDropDown(req).then((res) => {
+            if (res.status) {
+                setUnitsData(res.data)
+            } else {
+                setUnitsData([]);
+            }
+        }).catch(err => console.log(err.message, 'err message'));
 
     }
 
-
     return (
         <div>
-            <Form layout='vertical' form={formRef}>
+            <Form layout='vertical' form={formRef} initialValues={initialValues} >
                 <Row>
-                    <Form.Item style={{ display: 'none' }} name='id'>
-                        <Input placeholder="id" type='hidden' />
+                    <Form.Item hidden name={'rolesId'}>
+                        <InputNumber />
                     </Form.Item>
-                    <Col xs={{ span: 24, offset: 0 }} sm={{ span: 24, offset: 0 }} md={{ span: 10, offset: 0 }} lg={{ span: 10, offset: 0 }} xl={{ span: 10, offset: 0 }} xxl={{ span: 10, offset: 0 }}>
-                        <Form.Item name='name' label='Name'
+                    <Form.Item hidden name={'versionFlag'}>
+                        <InputNumber />
+                    </Form.Item>
+                    <Col xs={24} md={24} lg={7} xl={7} xxl={24} >
+                        <Form.Item name='roleName' label={t("roles.common.name", { defaultValue: 'Name' })}
                             rules={[
-                                { required: true, message: 'Please fill the name' },
-                                { pattern: new RegExp(/^[A-Za-z]*$/), message: 'Name contain letters only' }
+                                { required: true, message: t("common.fillTheName", { defaultValue: 'Please fill the name' }) },
+                                { pattern: new RegExp(/^[A-Za-z]*$/), message: t("common.lettersOnly", { defaultValue: 'Name contain letters only' }) }
                             ]}>
-                            <Input placeholder="name" />
+                            <Input placeholder={t("roles.common.name", { defaultValue: 'Name' })} />
                         </Form.Item>
                     </Col>
-                    <Col xs={{ span: 24, offset: 0 }} sm={{ span: 24, offset: 0 }} md={{ span: 10, offset: 1 }} lg={{ span: 10, offset: 1 }} xl={{ span: 10, offset: 1 }} xxl={{ span: 10, offset: 1 }}>
-                        <Form.Item name='description' label='Description'
+                    <Col xs={24} md={24} lg={7} xl={7} xxl={24} offset={1}>
+                        <Form.Item name='description' label={t("roles.common.description", { defaultValue: 'Description' })}
                             rules={[
-                                { required: true, message: 'description is required' }
+                                { required: true, message: t('roles.form.descriptionRequired', { defaultValue: 'Description is required' }) }
                             ]}>
-                            <Input placeholder='Description' />
+                            <Input placeholder={t("roles.common.description", { defaultValue: 'Description' })} />
                         </Form.Item>
                     </Col>
-                    <Col xs={{ span: 24, offset: 0 }} sm={{ span: 24, offset: 0 }} md={{ span: 10, offset: 1 }} lg={{ span: 10, offset: 1 }} xl={{ span: 10, offset: 1 }} xxl={{ span: 10, offset: 1 }}>
-                        <Form.Item name='unitId' label='Unit Id'
+                    <Col xs={24} md={24} lg={7} xl={7} xxl={24} offset={1}>
+                        <Form.Item name='unitId' label={t("roles.common.unit", { defaultValue: 'Unit' })}
                             rules={[
-                                { required: true, message: 'unitid is required' }
+                                { required: true, message: t('roles.form.unitRequired', { defaultValue: 'unit  is required' }) }
                             ]}>
-                            <Input placeholder='UnitId' />
+                            <Select placeholder='Select Unit'>
+                                {SelectedUnitsData.map((rec) => {
+                                    return <Option value={rec.unitId}>{rec.name}</Option>
+                                })}
+                            </Select>
                         </Form.Item>
                     </Col>
                 </Row>
+                <br></br>
                 <Row justify='end'>
                     <Col>
-                        <Button type='primary' onClick={onSubmit}>Submit</Button>
+                        <Button type='primary' onClick={onSubmit}>{t("common.submitButton", { defaultValue: 'Submit' })}</Button>
                     </Col>
                 </Row>
             </Form>

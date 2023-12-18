@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+const initialState: any = {
   event: null,
   isPWASupported: false,
   isStandalone: window.matchMedia('(display-mode: standalone)').matches,

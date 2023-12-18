@@ -21,10 +21,6 @@ export abstract class AbstractEntity {
     @Generated("uuid")
     public uuid: string;
 
-
-    @Column('varchar', { name: 'unit_code', length: 20, nullable: true })
-    unitCode: string;
-
     @Column('boolean', {
         nullable: false,
         default: true,

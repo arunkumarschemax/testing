@@ -1,0 +1,250 @@
+@import '~antd/dist/reset.css';
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700|Poppins:400,500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.toggle-activated {
+    background-color: #14db14;
+    vertical-align: top;
+    color: #fff;
+}
+
+.toggle-deactivated {
+    background-color: #ff0000;
+    vertical-align: top;
+    color: #fff;
+    background-image: none;
+}
+
+
+.disabled-Edit-Icon {
+    color: #8080807d;
+}
+
+.disabled-icon {
+    color: rgba(0, 0, 0, 0.25) !important; /* Set the desired disabled color */
+    pointer-events: none; /* Disable pointer events on the icon */
+  }
+
+.Editable-Icon {
+    color: #1890ff;
+}
+
+.ant-descriptions-item-label>span {
+    font-weight: bold;
+    font-size: small;
+}
+
+.contracts .ant-table-thead>tr>th {
+    background: #2195f3 !important;
+    color: #fff;
+    padding: 8px 8px;
+}
+
+.ant-table-thead>tr>th,
+.ant-table tfoot>tr>th {
+    padding: 8px 8px;
+}
+
+/* .ant-table-thead>tr>th {
+    background-color: #e6e0e0!important;
+} */
+/* 
+.ant-table-thead>tr>th {
+    background-color: #e6e0e0!important;
+}
+.ant-table.ant-table-bordered td, .ant-table.ant-table-bordered th {
+    border: 0.5px solid #dee2e6;
+} */
+
+.ant-table-tbody>tr>td,
+.ant-table tfoot>tr>td {
+    padding: 0.3rem !important;
+}
+
+/* .ant-card-head {
+    min-height: 40px !important;
+    line-height: 0;
+} */
+
+/* th {
+    white-space: nowrap;
+} */
+
+.contracts .ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>thead>tr>th {
+    text-align: center;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.contracts .ant-table-thead>tr>th,
+.contracts .ant-table-tbody>tr>td,
+.contracts .ant-table tfoot>tr>th,
+.contracts .ant-table tfoot>tr>td {
+    padding: 0.3rem !important;
+}
+
+.contracts .ant-table-thead .ant-table-row-expand-icon-cell {
+    background: #2195f3 !important;
+    color: #fff;
+}
+
+.contracts .ant-table-thead .ant-table-selection-column {
+    background: #2195f3 !important;
+    color: #fff;
+}
+
+.ant-list-item {
+    padding: 0.3rem !important;
+}
+
+
+.export-excel-btn {
+    color: #fff;
+    margin-right: 20px;
+    background-color: #088f08;
+    border-color: #088f08;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+    -webkit-box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+    box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+    border-radius: 4px;
+}
+
+.export-excel-btn:hover,
+.export-excel-btn:focus,
+.export-excel-btn:active,
+.export-excel-btn.active {
+    color: #fff;
+    background-color: rgba(0, 128, 0, 0.9);
+    border-color: rgba(0, 128, 0, 0.9);
+
+}
+
+.export-excel-btn-disabled {
+    color: #fff;
+    margin-right: 20px;
+}
+
+span.ant-descriptions-item-label {
+    font-weight: bold;
+    /* font-size: small; */
+}
+
+/* 
+.ant-form-item {
+    margin-bottom: 40px;
+} */
+
+
+/* material floating label and animated underline bar -- https://auralinna.blog/post/2018/how-to-create-material-design-like-form-text-fields*/
+
+/* .form-field {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.form-field__label {
+    font-size: 0.75rem;
+    transform: translateY(-14px);
+    display: block;
+    font-weight: normal;
+    left: 0;
+    margin: 0;
+    padding: 18px 12px 0;
+    position: absolute;
+    top: 0;
+    transition: all 0.4s;
+    width: 100%;
+}
+
+.form-field__control {
+    background: #eee;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.form-field__bar {
+    border-bottom: 2px solid #b11adc;
+    bottom: 0;
+    content: "";
+    display: block;
+    left: 0;
+    margin: 0 auto;
+    position: absolute;
+    right: 0;
+    transform: scaleX(0);
+    transition: all 0.4s;
+    width: 1%;
+}
+
+.form-field__input,
+.form-field__textarea {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #999;
+    color: #333;
+    display: block;
+    font-size: 1.2rem;
+    margin-top: 24px;
+    outline: 0;
+    padding: 0 12px 10px 12px;
+    width: 100%;
+}
+
+.form-field__input:-ms-input-placeholder~.form-field__label,
+.form-field__textarea:-ms-input-placeholder~.form-field__label {
+    font-size: 1.2rem;
+    transform: translateY(0);
+}
+
+.form-field__input:placeholder-shown~.form-field__label,
+.form-field__textarea:placeholder-shown~.form-field__label {
+    font-size: 1.2rem;
+    transform: translateY(0);
+}
+
+.form-field__input:focus~.form-field__label,
+.form-field__textarea:focus~.form-field__label {
+    color: #b11adc;
+    font-size: 0.75rem;
+    transform: translateY(-14px);
+}
+
+.form-field__input:focus~.form-field__bar,
+.form-field__textarea:focus~.form-field__bar {
+    border-bottom: 2px solid #b11adc;
+    transform: scaleX(150);
+}
+
+.form-field__textarea {
+    height: 150px;
+} */
+/* https://codesandbox.io/s/antd-float-label-forked-k8p00?file=/FloatInput/index.js ---https://github.com/ant-design/ant-design/issues/16323 */
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.default-card-class .ant-card-head {
+    background-color: #2193f3 !important;
+    color: #fff !important;
+}

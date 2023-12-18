@@ -1,6 +1,11 @@
+import { CommonRequestAttrs } from "@finestchoicex-iam/shared-models";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class ActivateAttributeDto{
+export class AttributeIdReqDto extends CommonRequestAttrs {
     @ApiProperty()
-    id:string;
+    attributeId: number;
+    constructor(username: string, userId: number, attributeId: number) {
+        super(username, userId)
+        this.attributeId  =attributeId;
+    }
 }

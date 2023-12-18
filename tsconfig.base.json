@@ -10,9 +10,14 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "suppressImplicitAnyIndexErrors": false,
+    "strictNullChecks": false,
     "baseUrl": ".",
     "paths": {
       "@finestchoicex-iam/backend-utils": [
@@ -26,5 +31,8 @@
       ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

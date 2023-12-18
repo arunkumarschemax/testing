@@ -1,5 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/common-entities";
+import { ApplicationEntity } from "../../applications/entities/application.entity";
+import { MenusEntity } from "../../menus/entities/menus.entity";
+import { PermissionsEntity } from "../../permissions/entities/permissions.entity";
+import { SubMenuEntity } from "../../sub-menus/entities/sub-menus.entity";
 
 @Entity('module')
 export class ModulesEntity extends AbstractEntity {
@@ -14,9 +18,18 @@ export class ModulesEntity extends AbstractEntity {
         name: 'description',
         length: 225
     })
-    Description: string;
+    description: string;
 
-    // @ManyToOne(() => Application, (aps) => aps.applicationId)
-    // @JoinColumn({ name:"application_id" })
-    // module: Application;
+    @ManyToOne(type => ApplicationEntity, app => app.modules, { nullable: false })
+    @JoinColumn({ name: 'application_id' })
+    application: ApplicationEntity;
+
+    @OneToMany(() => MenusEntity, (menu) => menu.module)
+    menus: MenusEntity[];
+
+    @OneToMany(() => SubMenuEntity, (subMenu) => subMenu.module)
+    subMenus: SubMenuEntity[];
+
+    @OneToMany(() => PermissionsEntity, (subMenu) => subMenu.module)
+    permissions: PermissionsEntity[];
 }

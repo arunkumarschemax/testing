@@ -1,27 +1,40 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/common-entities";
-import { CONFIGURABLE_MODULE_ID } from "@nestjs/common/module-utils/constants";
-import { Module } from "@nestjs/common";
+import { IconType } from "@finestchoicex-iam/shared-models";
+import { ModulesEntity } from "../../modules/entities/modules.entity";
+import { SubMenuEntity } from "../../sub-menus/entities/sub-menus.entity";
+import { ApplicationEntity } from "../../applications/entities/application.entity";
 
-export enum IConTypeEnum {
-    SYS_LIB = 'sysLib',
-    SVG = 'svg'
-}
+
 @Entity('menus')
-export class Menus extends AbstractEntity {
+export class MenusEntity extends AbstractEntity {
     @Column('varchar', { name: 'name', length: 255 })
     name: string;
 
-    @Column('varchar', { name: 'order', length: 11 })
+    @Column('int', { name: 'order' })
     order: number;
 
-    @Column('enum', { name: 'icon_type', enum: IConTypeEnum })
-    icon_type: IConTypeEnum;
+    @Column('enum', { name: 'icon_type', enum: IconType })
+    iconType: IconType;
 
     @Column('varchar', { name: 'icon_name', length: 50 })
-    icon_name: string;
+    iconName: string;
+
+    @Column('varchar', { name: 'path', length: 255 })
+    path: string;
+  
+    @Column('varchar', { name: 'component', length: 255 })
+    component: string;
+
+    @ManyToOne(type => ModulesEntity, module => module.menus, { nullable: false })
+    @JoinColumn({ name: 'module_id' })
+    module: ModulesEntity;
+
+    @ManyToOne(type => ApplicationEntity, app => app.menus, { nullable: false })
+    @JoinColumn({ name: 'application_id' })
+    application: ApplicationEntity;
+
+    @OneToMany(() => SubMenuEntity, (subMenu) => subMenu.menu)
+    subMenus: SubMenuEntity[];
 
 }
-// @ManyToOne(() => Module, module => module.menus)
-// module: Module;
-// @CONFIGURABLE_MODULE_ID xxxxxxxx

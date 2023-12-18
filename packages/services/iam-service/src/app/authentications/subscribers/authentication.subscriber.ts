@@ -19,10 +19,10 @@ export class AuthenticationSubscriber
         entity,
     }: InsertEvent<AuthenticationEntity>): Promise<void> {
         if (entity.password) {
-            entity.password = await AuthenticationProvider.generateHash(
-                entity.password
-            );
-        }
+            const [password, salt] = await AuthenticationProvider.generateHash(entity.password);
+            entity.password = password;
+            entity.salt = salt;
+        };
 
         if (entity.email) {
             entity.email = entity.email.toLowerCase();
@@ -34,13 +34,13 @@ export class AuthenticationSubscriber
         databaseEntity,
     }: UpdateEvent<AuthenticationEntity>): Promise<void> {
         if (entity.password) {
-            const password = await AuthenticationProvider.generateHash(
-                entity.password
-            );
+            const [password, salt] = await AuthenticationProvider.generateHash(entity.password);
 
             if (password !== databaseEntity?.password) {
                 entity.password = password;
+                entity.salt = salt;
             }
+
         }
     }
 }

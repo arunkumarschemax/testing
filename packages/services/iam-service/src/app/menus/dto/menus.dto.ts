@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IconType } from '@finestchoicex-iam/shared-models';
 
 export class MenuDto {
-  @ApiProperty()
-  id: number;
 
   @ApiProperty()
   name: string;
@@ -11,13 +10,13 @@ export class MenuDto {
   order: number;
 
   @ApiProperty()
-  icon_type: 'sysLib' | 'svg';
+  iconType: IconType;
 
   @ApiProperty()
-  icon_name: string;
+  iconName: string;
 
-  
   @ApiProperty()
- module_id: number;
- 
+  menuId: string;
+
+
 }

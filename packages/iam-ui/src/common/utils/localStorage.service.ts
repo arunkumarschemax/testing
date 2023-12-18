@@ -45,7 +45,7 @@ export const persistUser = (user: any): void => {
 export const readUser = (): any | null => {
   const userStr = localStorage.getItem('user');
 
-  return userStr ? JSON.parse(userStr) : testUser;
+  return userStr && (userStr != 'undefined') ? JSON.parse(userStr) : testUser;
 };
 
 export const deleteToken = (): void => localStorage.removeItem('accessToken');

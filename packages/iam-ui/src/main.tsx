@@ -1,9 +1,10 @@
-import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
-import App from './app/app';
+import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import App from './app/app';
 import './i18n';
+import './index.css';
 
 interface EventTarget {
     state?: 'activated';
@@ -13,9 +14,9 @@ const container = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(container);
 
 root.render(
-    <StrictMode>
+    <HashRouter>
         <Provider store={store}>
             <App />
         </Provider>
-    </StrictMode>,
+    </HashRouter>,
 );

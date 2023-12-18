@@ -1,31 +1,37 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import configuration from '../config/configuration';
+import { DatabaseModule } from '../database';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '../config/config.module';
-import { DatabaseModule } from '../database';
-import { UnitsModule } from './units/units.module';
-import { ScopesModule } from './scopes/scopes.module';
-import { MenusModule } from './menus/menus.module';
-import { SubMenusModule } from './sub_menus/sub_menus.module';
-import { PermissionsModule } from './permissions/permissions.module';
-import { RolePermissionsModule } from './role_permissions/role_permissions.module';
-import { UserPermissionsModule } from './user_permissions/user_permissions.module';
-import { AttributesModule } from './attributes/attributes.module';
-import { OrganizationModule } from './organization/organization.module';
-import { UsersModule } from './users/users.module';
-import { AuthenticationsModule } from './authentications/authentications.module';
-import { UserToAttributesModule } from './user_to_attributes/user-to-attributes.module';
-import { RolesModule } from './roles/roles.module';
-import { UserRolesModule } from './user_roles/user-roles.module';
 import { ApplicationsModule } from './applications/applications.module';
+import { AttributesModule } from './attributes/attributes.module';
+import { AuthenticationsModule } from './authentications/authentications.module';
+import { ClientAppsModule } from './client-applications/client-apps.module';
+import { MenusModule } from './menus/menus.module';
 import { ModulesModule } from './modules/modules.module';
+import { OrganizationModule } from './organization/organization.module';
+import { PermissionsModule } from './permissions/permissions.module';
+import { RolePermissionsModule } from './role-permissions/role-permissions.module';
+import { RolesModule } from './roles/roles.module';
+import { ScopesModule } from './scopes/scopes-module';
+import { SubMenusModule } from './sub-menus/sub-menus.module';
+import { UnitsModule } from './units/units.module';
+import { UserPermissionsModule } from './user-permissions/user-permissions.module';
+import { UserRolesModule } from './user-roles/user-roles.module';
+import { UserToAttributesModule } from './user-to-attributes/user-to-attributes.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [ 
-    ConfigModule,
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
     DatabaseModule,
     AttributesModule,
     OrganizationModule,
+    ClientAppsModule,
     UnitsModule,
     ScopesModule,
     MenusModule,
@@ -44,4 +50,4 @@ import { ModulesModule } from './modules/modules.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

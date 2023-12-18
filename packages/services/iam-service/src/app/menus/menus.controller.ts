@@ -1,54 +1,68 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { MenuService } from './menus.service';
+import { returnException } from '@finestchoicex-iam/backend-utils';
 import { MenuDto } from './dto/menus.dto';
-
+import { MenuService } from './menus.service';
+import { AppModuleIdReqDto, CommonResponse, MenusDropDownResponse, GetAllMenusResponse, MenusDto } from '@finestchoicex-iam/shared-models';
+import { ActivateMenuDto } from './dto/activate.dto';
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Menus')
 @Controller('menus')
-export class MenuController {
+export class MenusController {
   constructor(private readonly menuService: MenuService) { }
-  private readonly applicationExceptionHandler: any
 
-  @Post('create')
-  async create(menuDto: MenuDto): Promise<any> {
+  @Post('createMenu')
+  async createMenu(@Body() menuDto: MenusDto): Promise<CommonResponse> {
     try {
-
-      const createdMenu = await this.menuService.create(menuDto);
-      return createdMenu;
+      return await this.menuService.createMenu(menuDto);
     } catch (error) {
-
-      throw new Error('Failed to create menu');
+      return returnException(CommonResponse, error);
     }
   }
 
   @Post('getAllMenus')
-  async getAllMenus(): Promise<any> {
+  async getAllMenus(): Promise<GetAllMenusResponse> {
     try {
-
-      const menus = await this.menuService.getAllMenus();
-      return menus;
+      return await this.menuService.getAllMenus();
     } catch (error) {
-
-      throw new Error('Failed to retrieve menus');
+      return returnException(GetAllMenusResponse, error);
     }
   }
 
-  @Post('activateOrDeactivate')
-  async activateOrDeactivate(@Body() deactivateDto: any): Promise<any> {
+  @Post('getAllMenusByModuleAndAppId')
+  async getAllMenusByModuleAndAppId(@Body() req: AppModuleIdReqDto): Promise<GetAllMenusResponse> {
     try {
-      return await this.menuService.activateOrDeactivate(deactivateDto);
+      return await this.menuService.getAllMenusByModuleAndAppId(req);
     } catch (error) {
-      this.applicationExceptionHandler.returnException({}, error)
+      return returnException(GetAllMenusResponse, error);
     }
   }
 
-  @Post('getAllMenusDropDownDto')
-  async getAllMenusDropDownDto(): Promise<any> {
+  @Post('getAllMenusDropDown')
+  async getAllMenusDropDown(): Promise<MenusDropDownResponse> {
     try {
-      return await this.menuService.getAllMenusDropDownDto();
-
+      return await this.menuService.getAllMenusDropDown();
     } catch (error) {
-      this.applicationExceptionHandler.returnException({}, error)
+      return returnException(MenusDropDownResponse, error);
     }
   }
+
+  @Post('getAllMenusDropDownByModuleAndAppId')
+  async getAllMenusDropDownByModuleAndAppId(@Body() req: AppModuleIdReqDto): Promise<MenusDropDownResponse> {
+    try {
+      return await this.menuService.getAllMenusDropDownByModuleAndAppId(req);
+    } catch (error) {
+      return returnException(MenusDropDownResponse, error);
+    }
+  }
+
+  @Post('activateOrDeactivateMenu')
+  async activateOrDeactivateMenu(@Body() activateDto: ActivateMenuDto): Promise<CommonResponse> {
+    try {
+      return await this.menuService.activateAndDeactivatedMenu(activateDto);
+    } catch (error) {
+      return returnException(CommonResponse, error);
+    }
+  }
+
+
 }
-
-

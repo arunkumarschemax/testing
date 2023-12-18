@@ -5,8 +5,8 @@ import { SwaggerConfig } from './swagger.interface';
  * Change this to suit your app!
  */
 export const SWAGGER_CONFIG: SwaggerConfig = {
-  title: 'Xapperal-WMS',
-  description: 'Services for Warehouse management system',
+  title: 'Finest Choicex - IAM',
+  description: 'Services for Identity and Access Management',
   version: '1.0',
-  tags: ['WMS'],
+  tags: ['IAM'],
 };

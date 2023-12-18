@@ -1,10 +1,10 @@
+import { CommonResponse, GetAllAttributesDropDownResponse, GetAllAttributesResponse } from '@finestchoicex-iam/shared-models';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CommonResponse, returnException } from 'packages/libs/backend-utils/src/lib/exception-handling';
+import { returnException } from 'packages/libs/backend-utils/src/lib/exception-handling';
 import { AttributesService } from './attributes.service';
-import { ActivateAttributeDto } from './dtos/activate.dto';
+import { AttributeIdReqDto } from './dtos/activate.dto';
 import { AttributeDto } from './dtos/attribute.dto';
-import { GetAllAttributesDropDownResponse, GetAllAttributesResponce } from '@finestchoicex-iam/shared-services';
 
 @ApiTags('Attributes')
 @Controller('attributes')
@@ -12,7 +12,7 @@ export class AttributesController {
   constructor(private readonly attributesService: AttributesService) { }
 
   @Post('createAttribute')
-  async createAttrobute(@Body() atbDto: AttributeDto): Promise<CommonResponse> {
+  async createAttribute(@Body() atbDto: AttributeDto): Promise<CommonResponse> {
     try {
       return await this.attributesService.createAttribute(atbDto)
     } catch (error) {
@@ -20,11 +20,11 @@ export class AttributesController {
     }
   }
   @Post("getAllAttributes")
-  async getAllAttributes(): Promise<GetAllAttributesResponce> {
+  async getAllAttributes(): Promise<GetAllAttributesResponse> {
     try {
       return await this.attributesService.getAllAttributes()
     } catch (error) {
-      return returnException(GetAllAttributesResponce, error);
+      return returnException(GetAllAttributesResponse, error);
     }
   }
   @Post('getAllAttributesDropDown')
@@ -35,10 +35,10 @@ export class AttributesController {
       return returnException(GetAllAttributesDropDownResponse, error);
     }
   }
-  @Post('acticateAndDeactivatedAttributes')
-  async acticateAndDeactivatedAttributes(@Body() activateDto:ActivateAttributeDto): Promise<CommonResponse>{
+  @Post('activateAndDeactivatedAttributes')
+  async activateAndDeactivatedAttributes(@Body() activateDto:AttributeIdReqDto): Promise<CommonResponse>{
     try {
-      return await this.attributesService.acticateAndDeactivatedAttributes(activateDto);
+      return await this.attributesService.activateAndDeactivatedAttributes(activateDto);
     } catch (error) {
       return  returnException(CommonResponse,error);
     }

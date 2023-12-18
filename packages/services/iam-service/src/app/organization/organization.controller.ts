@@ -2,8 +2,9 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { OrganizationDto } from './dtos/organization.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { returnException, CommonResponse, GetAllOrganizationResponse, DropdownOrganizationResponse } from '@finestchoicex-iam/backend-utils';
-import { ActivateOrganizationDto } from './dtos/activate.dto';
+import { OrganizationIdReqDto } from './dtos/activate.dto';
+import { CommonResponse, DropdownOrganizationResponse, GetAllOrganizationResponse } from '@finestchoicex-iam/shared-models';
+import { returnException } from '@finestchoicex-iam/backend-utils';
 
 @ApiTags('Organization')
 @Controller('organization')
@@ -37,7 +38,7 @@ export class OrganizationController {
     }
   }
   @Post('activateOrDeactivateOrganization')
-  async activateOrDeactivateOrganization(@Body() dto:ActivateOrganizationDto): Promise<CommonResponse> {
+  async activateOrDeactivateOrganization(@Body() dto:OrganizationIdReqDto): Promise<CommonResponse> {
     try {
       return await this.organizationService.activateOrDeactivateOrganization(dto)
     } catch (error) {

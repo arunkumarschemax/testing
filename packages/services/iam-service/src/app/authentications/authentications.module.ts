@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AuthenticationsService } from './authentications.service';
-import { AuthenticationsController } from './authentications.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthenticationEntity } from './entities/authentications.entity';
-import { LocalStrategy } from './strategies/local.strategy';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '../../config/config.module';
-import { ConfigService } from '../../config/config.service';
+import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthenticationsController } from './authentications.controller';
+import { AuthenticationsService } from './authentications.service';
+import { AuthenticationAdapter } from './decorators/authentication-adapter';
+import { AuthenticationEntity } from './entities/authentications.entity';
 import { AuthenticationRepository } from './repositories/authentication.repository';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
+import { UserRolesModule } from '../user-roles/user-roles.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,14 +20,15 @@ import { AuthenticationRepository } from './repositories/authentication.reposito
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get().jwtConfig.jwtSecret,
-        signOptions: { expiresIn: configService.get().jwtConfig.jwtExpiryTime },
+        secret: configService.get('jwtConfig').jwtSecret,
+        signOptions: { expiresIn: configService.get('jwtConfig').jwtExpiryTime },
       }),
       inject: [ConfigService],
     }),
+    UserRolesModule
   ],
   controllers: [AuthenticationsController],
-  providers: [AuthenticationsService, AuthenticationRepository, LocalStrategy, JwtStrategy, RefreshTokenStrategy],
-  exports: [TypeOrmModule],
+  providers: [AuthenticationsService, AuthenticationRepository, LocalStrategy, JwtStrategy, RefreshTokenStrategy, AuthenticationAdapter],
+  exports: [TypeOrmModule, AuthenticationsService],
 })
 export class AuthenticationsModule { }

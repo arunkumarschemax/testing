@@ -1,35 +1,81 @@
 import { Injectable } from '@nestjs/common';
-import { MenuDto } from './dto/menus.dto';
+import { MenuRepository } from './repo/menu.repo';
+import { CommonResponse, MenusDropdownDto, MenusDropDownResponse, MenusDto, GetAllMenusResponse, AppModuleIdReqDto } from '@finestchoicex-iam/shared-models';
+import { MenuAdapter } from './dto/adapter';
+import { ActivateMenuDto } from './dto/activate.dto';
+import { ApplicationEntity } from '../applications/entities/application.entity';
+import { ModulesEntity } from '../modules/entities/modules.entity';
 
 @Injectable()
 export class MenuService {
-  menuRepository: any;
-  menuService: any;
+  constructor(
+    private readonly menuRepo: MenuRepository,
+    private readonly adapter: MenuAdapter,
+  ) { }
 
-    async create(menuDto: MenuDto): Promise<any> {
-    const menu = this.menuRepository.create(menuDto);
-    return await this.menuRepository.save(menu);
-  
+  async createMenu(menuDto: MenusDto): Promise<CommonResponse> {
+    const conversion = this.adapter.convertDtoToEntity(menuDto);
+    const save = await this.menuRepo.save(conversion);
+    return new CommonResponse(true, 1234, "created successfully")
   }
 
-
-  async getAllMenus(): Promise<any[]> {
-    return await this.menuRepository.find();
-  }
-
- 
-  async activateOrDeactivate(deactivateDto: any): Promise<Response> {
-    try {
-      
-      return await this.menuService.activateOrDeactivate(deactivateDto);
-    } catch (error) {
-      
-      throw new Error('Failed to activate or deactivate menu');
+  async getAllMenus(): Promise<GetAllMenusResponse> {
+    const getAll = await this.menuRepo.find();
+    const data: MenusDto[] = [];
+    for (const entity of getAll) {
+      const conversion = this.adapter.convertEntityToDto(entity);
+      data.push(conversion);
     }
+    return new GetAllMenusResponse(true, 1233, 'Data Retried Successfully')
   }
 
-  async getAllMenusDropDownDto(): Promise<any> {
-    
+  async getAllMenusByModuleAndAppId(req: AppModuleIdReqDto): Promise<GetAllMenusResponse> {
+    const app = new ApplicationEntity();
+    app.id = req.appId;
+    const module = new ModulesEntity();
+    module.id = req.moduleId;
+    const getAll = await this.menuRepo.find({ where: { application: app, module }, relations: ['application', 'module'] });
+    const data: MenusDto[] = [];
+    for (const entity of getAll) {
+      const conversion = this.adapter.convertEntityToDto(entity);
+      data.push(conversion);
+    }
+    return new GetAllMenusResponse(true, 1233, 'Data Retried Successfully', data)
   }
- 
+
+
+  async getAllMenusDropDown(): Promise<MenusDropDownResponse> {
+    const dropdown = await this.menuRepo.find({ select: ['name', 'id'] });
+    const data: MenusDropdownDto[] = [];
+    for (const entity of dropdown) {
+      const dropdownConversion = this.adapter.convertDropdownEntityToDto(entity);
+
+      data.push(dropdownConversion);
+    }
+    return new MenusDropDownResponse(true, 1233, 'Data Retrieved Successfully', data)
+  }
+
+
+
+  async getAllMenusDropDownByModuleAndAppId(req: AppModuleIdReqDto): Promise<MenusDropDownResponse> {
+    const app = new ApplicationEntity();
+    app.id = req.appId;
+    const module = new ModulesEntity();
+    module.id = req.moduleId;
+    const dropdown = await this.menuRepo.find({ select: ['name', 'id'], where: { application: app, module } });
+    const data: MenusDropdownDto[] = [];
+    for (const entity of dropdown) {
+      const dropdownConversion = this.adapter.convertDropdownEntityToDto(entity);
+
+      data.push(dropdownConversion);
+    }
+    return new MenusDropDownResponse(true, 1233, 'Data Retrieved Successfully', data)
+  }
+
+  async activateAndDeactivatedMenu(activateDto: ActivateMenuDto): Promise<CommonResponse> {
+    const deactivate = await this.menuRepo.findOne({ where: { id: activateDto.menuId } });
+    const activate = await this.menuRepo.update({ id: activateDto.menuId }, { isActive: !deactivate.isActive })
+
+    return new CommonResponse(true, 1233, `status  ${deactivate.isActive ? 'Deactivated' : 'Activated'} successfully`);
+  }
 }

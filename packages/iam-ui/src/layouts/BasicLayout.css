@@ -1,0 +1,184 @@
+.ant-layout-sider-children .logo {
+  height: 32px !important;
+  margin: 0px !important;
+  position: relative;
+  height: 32px;
+  padding-left: 5px;
+  text-align: left;
+  overflow: hidden;
+  line-height: 32px;
+  background: #001529;
+  transition: all 0.3s;
+}
+
+.ant-layout-sider-children .logo img {
+  float: left;
+  height: 32px;
+}
+
+.ant-layout-sider-children .logo h1 {
+  display: inline-block;
+  /* margin: 0; */
+  color: #fff;
+  font-weight: 600;
+  font-size: 24px;
+  font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+  padding: 5px;
+  cursor: pointer;
+  /* background: none;   */
+  background: linear-gradient(to right, #1cc91c, rgb(84, 128, 241), rgb(217, 48, 191));
+  /* background-size: 200% auto; */
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  overflow: visible;
+  animation: shine 1s linear infinite;
+  /* vertical-align: middle;
+  text-align: center;
+  position: relative; */
+}
+
+.ant-menu.ant-menu-dark.ant-menu-root {
+  text-align: left;
+  padding-top: 10px !important;
+}
+
+.ant-pro-global-header-trigger {
+  float: left;
+  margin-left: 20px;
+  font-size: 25px;
+  line-height: normal;
+}
+
+.ant-pro-global-header {
+  position: relative;
+  height: 34px;
+  box-shadow: rgba(0, 21, 41, 0.08) 0px 1px 4px;
+  padding: 0px;
+  background: rgb(255, 255, 255);
+}
+
+.content.header {
+  position: relative;
+  height: auto !important;
+  box-shadow: rgba(0, 21, 41, 0.08) 0px 1px 4px;
+  padding: 0px;
+  background: #3f7477 !important;
+  margin: -24px -24px 0px;
+  padding: 0px 10px !important;
+  font-size: 23px;
+  color: #ffffff;
+  line-height: unset;
+}
+
+.content.header h3 {
+  color: #fff;
+  padding: 0;
+}
+
+@media screen and (max-width: 992px) {
+  .ant-pro-global-header-trigger {
+    margin-left: 10px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .ant-layout-sider.ant-layout-sider-dark {
+    flex: 0 0 230px !important;
+    max-width: 230px !important;
+    min-width: 200px;
+    width: 230px !important;
+  }
+
+  .ant-layout-sider.ant-layout-sider-dark.ant-layout-sider-collapsed {
+    flex: 0 0 80px !important;
+    max-width: 80p !important;
+    min-width: 80px;
+    width: 80px !important;
+  }
+
+  .samllLogo {
+    display: none !important;
+  }
+}
+
+.samllLogo {
+  display: block;
+  float: left;
+}
+
+.samllLogo img {
+  width: 32px;
+  float: left;
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+.ant-menu-sub.ant-menu-inline>.ant-menu-item,
+.ant-menu-sub.ant-menu-inline>.ant-menu-submenu>.ant-menu-submenu-title {
+  height: auto !important;
+}
+
+.ant-menu-inline .ant-menu-item,
+.ant-menu-inline .ant-menu-submenu-title {
+  white-space: unset !important;
+  height: auto !important;
+}
+
+.ant-menu-inline-collapsed .ant-menu-item,
+.ant-menu-inline-collapsed .ant-menu-submenu-title {
+  white-space: unset;
+  height: 30 !important;
+}
+
+/* .ant-menu-inline .ant-menu-item a{
+        text-overflow: ellipsis !important;
+        overflow: hidden;
+    } */
+.ant-menu-vertical>.ant-menu-item,
+.ant-menu-vertical-left>.ant-menu-item,
+.ant-menu-vertical-right>.ant-menu-item,
+.ant-menu-inline>.ant-menu-item,
+.ant-menu-vertical>.ant-menu-submenu>.ant-menu-submenu-title,
+.ant-menu-vertical-left>.ant-menu-submenu>.ant-menu-submenu-title,
+.ant-menu-vertical-right>.ant-menu-submenu>.ant-menu-submenu-title,
+.ant-menu-inline>.ant-menu-submenu>.ant-menu-submenu-title {
+  /* height: 30px !important; */
+  line-height: 25px !important;
+  font-size: 12px;
+  /* padding: 5px 10px; */
+}
+
+.ant-menu-vertical .ant-menu-item:not(:last-child),
+.ant-menu-vertical-left .ant-menu-item:not(:last-child),
+.ant-menu-vertical-right .ant-menu-item:not(:last-child),
+.ant-menu-inline .ant-menu-item:not(:last-child) {
+  margin-bottom: 0px !important;
+}
+
+.line-height-20 {
+  line-height: 20px;
+}
+
+.no-btm-margin-form-item .ant-form-item {
+  margin-bottom: 0px !important;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.align-left {
+  text-align: left;
+}
+
+
+.ant-input-number-disabled {
+  color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.ant-layout-header {
+  line-height: 20px;
+}

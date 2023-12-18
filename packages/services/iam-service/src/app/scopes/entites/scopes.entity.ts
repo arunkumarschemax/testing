@@ -1,10 +1,9 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/common-entities";
+import { PermissionsEntity } from "../../permissions/entities/permissions.entity";
 
 @Entity('scopes')
-export class Scopes extends AbstractEntity {
-
-
+export class ScopesEntity extends AbstractEntity {
     @Column('varchar', {
         name: 'name',
         length: 60
@@ -15,6 +14,8 @@ export class Scopes extends AbstractEntity {
         name: 'code',
         length: 60,
     })
-    code: string
+    code: string;
 
+    @OneToMany(() => PermissionsEntity, (permission) => permission.scope)
+    permissions: PermissionsEntity[];
 }

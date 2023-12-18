@@ -23,5 +23,5 @@ export function createDocument(app: INestApplication): void {
   const swaggerModule = SwaggerModule.createDocument(app, options);
 
 
-  SwaggerModule.setup('api/v1', app, swaggerModule);
+  SwaggerModule.setup('api', app, swaggerModule);
 }

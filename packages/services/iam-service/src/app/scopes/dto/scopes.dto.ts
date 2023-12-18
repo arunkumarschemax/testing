@@ -1,13 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ScopeDto {
-    @ApiProperty()
-    id: number;
+    scopeId: number;
 
     @ApiProperty()
     name: string;
 
     @ApiProperty()
     code: string;
-
 }

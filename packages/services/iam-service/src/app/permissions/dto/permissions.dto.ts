@@ -1,18 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PermissionDto {
-  @ApiProperty()
-  id: number;
-
+export class PermDto {
+ 
   @ApiProperty()
   name: string;
 
   
   @ApiProperty()
- sub_menu_id: number;
+ subMenuId: number;
 
   
   @ApiProperty()
- scope_id: number;
+ scopeId: number;
+ @ApiProperty()
+ permissionId:number;
  
 }

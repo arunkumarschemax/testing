@@ -1,49 +1,56 @@
-import { Card, Button, Drawer } from 'antd';
-import { OrganizationGrid } from './organization-grid'
+import { GetAllOrganizations } from '@finestchoicex-iam/shared-models';
+import { OrganizationService } from '@finestchoicex-iam/shared-services';
+import { Button, Card, Drawer } from 'antd';
 import { useEffect, useState } from 'react';
-import { ClientModel, OrganizationForm } from './organiation-form';
+import { OrganizationForm } from './organiation-form';
+import { OrganizationGrid } from './organization-grid';
 
-export const OrganisationPage = () => {
+export const OrganizationPage = () => {
     const [showForm, setShowForm] = useState(false);
-    const [orgData, setOrgData] = useState<ClientModel[]>([]);
+    const [orgData, setOrgData] = useState<GetAllOrganizations[]>([]);
+    const orgService = new OrganizationService();
+    const [initialValues, setInitialValues] = useState<GetAllOrganizations>();
+    const [dummyRefresh, setDummyRefresh] = useState<number>(0);
 
     useEffect(() => {
-        getAllOrganisations();
+        getAllOrganizations();
     }, []);
 
-    const getAllOrganisations = () => {
-        setOrgData([new ClientModel(1, 'abx', 'bbs')]);
+    const getAllOrganizations = () => {
+        orgService.getAllOrganizations().then(res => {
+            if (res.status && res.data) {
+                setOrgData(res.data);
+            }
+        }).catch(err => console.log(err.message, 'err message'))
     }
 
 
-
-    const submitHandler = (req: ClientModel) => {
-        closeButtonHandler();
-        getAllOrganisations();
-    }
 
     const createButtonHandler = () => {
         setShowForm(true);
+        setDummyRefresh(prev => prev + 1);
     }
 
     const closeButtonHandler = () => {
         setShowForm(false);
+        setDummyRefresh(prev => prev + 1);
     }
     return (
         <>
-            <Card title='Clients' extra={<Button onClick={createButtonHandler}>Create</Button>}>
-                <OrganizationGrid data={orgData} />
+            <Card title='Client' extra={<Button onClick={createButtonHandler} type='primary'>Create</Button>}>
+                <OrganizationGrid getAllOrganizations={getAllOrganizations} tableData={orgData} setInitialValues={setInitialValues} createButtonHandler={createButtonHandler} />
             </Card>
             <Drawer
-                title={'Client'}
+                title={''}
                 open={showForm}
                 onClose={closeButtonHandler}
                 width='50%'
+                key={dummyRefresh}
             >
-                <OrganizationForm submitHandler={submitHandler} />
+                <OrganizationForm key={dummyRefresh} closeButtonHandler={closeButtonHandler} getAllOrganizations={getAllOrganizations} initialValues={initialValues} />
             </Drawer>
         </>
     )
 }
 
-export default OrganisationPage
+export default OrganizationPage

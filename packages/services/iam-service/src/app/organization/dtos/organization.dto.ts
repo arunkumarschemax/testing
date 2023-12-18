@@ -1,10 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class OrganizationDto{
+export class OrganizationDto {
     @ApiProperty()
-    name:string;
+    name: string;
     @ApiProperty()
-    description:string;
+    description: string;
     @ApiProperty()
-    organizationId:string;
+    organizationId: number;
+    @ApiProperty()
+    versionFlag:number;
 }

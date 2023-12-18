@@ -1,28 +1,36 @@
+import { UsersFileUploadDataDto } from "@finestchoicex-iam/shared-models";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class AuthenticationsDto{
+export class AuthenticationsDto {
     @ApiProperty()
-    email:string;
+    email: string;
     @ApiProperty()
-    username:string;
+    username: string;
     @ApiProperty()
-    password:string;
+    password: string;
     @ApiProperty()
-    sEmailVerified:boolean;
+    sEmailVerified: boolean;
     @ApiProperty()
-    noOfFailedLogin:number;
+    noOfFailedLogin: number;
     @ApiProperty()
-    accountLockedOn:string;
+    accountLockedOn: string;
     @ApiProperty()
-    sentOtp:string;
+    sentOtp: string;
     @ApiProperty()
-    otpSentTime:string;
+    otpSentTime: string;
     @ApiProperty()
-    otpExpiryTime:string;
+    otpExpiryTime: string;
     @ApiProperty()
-    salt:string;
+    salt: string;
     @ApiProperty()
-    hashedRefreshToken:string;
+    hashedRefreshToken: string;
     @ApiProperty()
-    authenticationId:string;
+    authenticationId: number;
+    @ApiProperty()
+    conformPassword: string;
+    @ApiProperty()
+    createdUser: string;
+    @ApiProperty()
+    filesData: UsersFileUploadDataDto[]
+    usersId:number;
 }

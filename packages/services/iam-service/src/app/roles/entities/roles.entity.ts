@@ -1,9 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/common-entities";
-import { UserRoles } from "../../user_roles/entitys/user-roles.entity";
+import { UserRolesEntity } from "../../user-roles/entitys/user-roles.entity";
+import { UnitEntity } from "../../units/entities/units.entity";
+import { RolePermissionEntity } from "../../role-permissions/entities/role-permissions.entity";
 
 @Entity('roles')
-export class Roles extends AbstractEntity {
+export class RolesEntity extends AbstractEntity {
 
     @Column('varchar', {
         name: 'name',
@@ -15,15 +17,17 @@ export class Roles extends AbstractEntity {
         name: 'description',
         length: 225
     })
-    Description: string;
+    description: string;
 
-    // @ManyToOne(() => Units, (units) => units.unitsId)
-    // @JoinColumn({ name: "unit_id" })
-    // rolesId:  Units;
+    @ManyToOne(() => UnitEntity, (unit: UnitEntity) => unit.roles, { nullable: false })
+    @JoinColumn({ name: 'unit_id' })
+    unit: UnitEntity;
+
+    @OneToMany(() => UserRolesEntity, (userRoles) => userRoles.role)
+    userRoles: UserRolesEntity[];
 
 
-    // @OneToMany(() => User
-    // Roles, (usr) => usr.userRolls)
-    // rolesId: UserRoles
+    @OneToMany(() => RolePermissionEntity, (rolePerm) => rolePerm.role)
+    rolePermissions: RolePermissionEntity[];
 
 }

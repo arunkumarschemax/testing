@@ -1,9 +1,9 @@
-import { CommonResponse, GetAllAttributeDto, GetAllAttributesDropDownResponse, GetAllAttributesResponce } from '@finestchoicex-iam/backend-utils';
+import { CommonResponse, GetAllAttributeDto, GetAllAttributesDropDownResponse, GetAllAttributesResponse, GlobalResponseObject } from '@finestchoicex-iam/shared-models';
 import { Injectable } from '@nestjs/common';
-import { GetAllAttributeDropDown } from 'packages/libs/shared-services/src/attrubutes/get-attribute-dropdown';
+import { GetAllAttributeDropDown } from 'packages/libs/shared-models/src/attributes/get-attribute-dropdown';
 import { DataSource } from 'typeorm';
 import { AttributesAdapter } from './adapter';
-import { ActivateAttributeDto } from './dtos/activate.dto';
+import { AttributeIdReqDto } from './dtos/activate.dto';
 import { AttributeDto } from './dtos/attribute.dto';
 import { AttributesRepository } from './repositories/attribute.repository';
 
@@ -17,21 +17,40 @@ export class AttributesService {
   }
 
   async createAttribute(attributeDto: AttributeDto): Promise<CommonResponse> {
-    const convesrion = this.adapter.convertDtotoEntity(attributeDto)
-    const save = await this.attributesRepo.save(convesrion);
-    return new CommonResponse(true, 1234, "created successfully")
-  }
-  async getAllAttributes(): Promise<GetAllAttributesResponce> {
-    const getAll = await this.attributesRepo.find();
-    const data: GetAllAttributeDto[] = [];
-    for (const entity of getAll) {
-      const convesrion = this.adapter.convertEntitytoDdto(entity);
-      data.push(convesrion);
+    let internalMessage: string;
+    const conversion = this.adapter.convertDtoToEntity(attributeDto);
+    if (attributeDto.attributeId) {
+      internalMessage = "Updated Successfully"
+      const findRecord = await this.attributesRepo.findOne({ where: { id: attributeDto.attributeId } });
+      if (findRecord.versionFlag !== attributeDto.versionFlag) {
+        return new GlobalResponseObject(false, 65465, 'Someone Already Modified This Record Please Refresh And Continue...')
+      }
+    } else {
+      internalMessage = "Created Successfully"
     }
-    return new GetAllAttributesResponce(true, 1233, 'Data Retried Successfully', data)
+    await this.attributesRepo.save(conversion);
+    return new CommonResponse(true, 1234, "created successfully");
+
+  };
+
+
+  async getAllAttributes(): Promise<GetAllAttributesResponse> {
+    const getAll = await this.attributesRepo.find();
+    if (getAll.length === 0) {
+      return new GlobalResponseObject(true, 1233, 'Data Not Found')
+    } else {
+      const data: GetAllAttributeDto[] = [];
+      for (const entity of getAll) {
+        const conversion = this.adapter.convertEntityToDto(entity);
+        data.push(conversion);
+      }
+
+      return new GetAllAttributesResponse(true, 1233, 'Data Retried Successfully', data)
+    }
+
   }
   async getAllAttributesDropDown(): Promise<GetAllAttributesDropDownResponse> {
-    const dropdown = await this.attributesRepo.find({ select: ['attributeName', 'uuid'] });
+    const dropdown = await this.attributesRepo.find({ select: ['attributeName', 'id'] });
     const data: GetAllAttributeDropDown[] = [];
     for (const entity of dropdown) {
       const dropdownConversion = this.adapter.convertDropDownEntityToDto(entity);
@@ -39,11 +58,10 @@ export class AttributesService {
     }
     return new GetAllAttributesDropDownResponse(true, 1233, 'Data Retrieved Successfully', data)
   }
-  
-  async acticateAndDeactivatedAttributes(activateDto:ActivateAttributeDto): Promise<CommonResponse> {
-    const deactivate = await this.attributesRepo.findOne({ where: { uuid:activateDto.id} });
-    const activate = await this.attributesRepo.update({uuid:activateDto.id},{isActive:!deactivate.isActive})
 
-  return new CommonResponse(true,1233,`status  ${deactivate.isActive ? 'Deactivated' : 'Activated'} successfully`);
+  async activateAndDeactivatedAttributes(activateDto: AttributeIdReqDto): Promise<CommonResponse> {
+    const deactivate = await this.attributesRepo.findOne({ where: { id: activateDto.attributeId } });
+    const activate = await this.attributesRepo.update({ id: activateDto.attributeId }, { isActive: !deactivate.isActive })
+    return new CommonResponse(true, 1233, `status  ${deactivate.isActive ? 'Deactivated' : 'Activated'} successfully`);
   }
 }

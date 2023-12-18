@@ -1,46 +1,35 @@
-
-import styled from 'styled-components';
-import GlobalStyle from '../common/styles/GlobalStyle';
-import { themeObject } from '../common/styles/themes/themeVariables';
 import { useLanguage } from '../common/hooks/useLanguage';
-import { useAppSelector } from '../common/hooks/reduxHooks';
-import { useThemeWatcher } from '../common/hooks/useThemeWatcher';
-import { useAutoNightMode } from '../common/hooks/useAutoNightMode';
-import { usePWA } from '../common/hooks/usePWA';
-import { HelmetProvider } from 'react-helmet-async';
-import { ConfigProvider } from 'antd';
+import { AppRoutes } from './app-routes';
+import { ConfigProvider, theme } from 'antd';
 import deDe from 'antd/lib/locale/de_DE';
 import enUS from 'antd/lib/locale/en_US';
-import { AppRouter } from '../router/AppRouter';
+import { HelmetProvider } from 'react-helmet-async';
+import GlobalStyle from '../common/styles/GlobalStyle';
+import { themeObject } from '../common/styles/themes/themeVariables';
+import { useAppSelector } from '../common/hooks/reduxHooks';
 
-
-const StyledApp = styled.div`
-    // Your style here
-`;
-
-
-export function App() {
+const App = () => {
   const { language } = useLanguage();
-  const theme = useAppSelector((state) => state.theme.theme);
-
-  usePWA();
-
-  useAutoNightMode();
-
-  useThemeWatcher();
-  return (
-    <>
-      <meta name="theme-color" content={themeObject[theme].primary} />
-      <GlobalStyle />
-      <HelmetProvider>
-        <ConfigProvider locale={language === 'en' ? enUS : deDe}>
-          <AppRouter />
-        </ConfigProvider>
-      </HelmetProvider>
-    </>
-  );
-
+  const theme1 = useAppSelector((state) => state.theme.theme);
+  return (<>
+    <meta name="theme-color" content={themeObject[theme1].primary} />
+    <GlobalStyle />
+    <HelmetProvider>
+      <ConfigProvider
+        locale={language === 'en' ? enUS : deDe}
+        theme={{
+          algorithm: theme.compactAlgorithm,
+          token: {
+            colorPrimary: '#1890ff',
+            borderRadius: 4
+          },
+        }}
+      >
+        <AppRoutes />
+      </ConfigProvider>
+    </HelmetProvider>
+  </>
+  )
 }
 
-
-export default App;
+export default App

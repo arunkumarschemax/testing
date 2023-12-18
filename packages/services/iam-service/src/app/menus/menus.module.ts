@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MenuService } from './menus.service';
-import { MenuController } from './menus.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Menus } from './entities/menus.entity';
+import { MenusEntity } from './entities/menus.entity';
+import { MenusController } from './menus.controller';
+import { MenuAdapter } from './dto/adapter';
+import { MenuRepository } from './repo/menu.repo';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Menus])],
-  controllers: [MenuController],
-  providers: [MenuService]
+  imports: [TypeOrmModule.forFeature([MenusEntity])],
+  controllers: [MenusController],
+  providers: [MenuService, MenuRepository, MenuAdapter]
 })
 export class MenusModule { }

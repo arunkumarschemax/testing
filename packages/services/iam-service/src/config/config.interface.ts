@@ -25,7 +25,6 @@ export interface RateLimiting {
   limit: number,
   maxLoginAttempts: number
 }
-
 export interface JWTConfigs {
   jwtSecret: string;
   jwtExpiryTime: string;
@@ -33,10 +32,15 @@ export interface JWTConfigs {
   refreshExpiryTime: string;
   jwtByCookieOrHeader: string;
 }
+export interface AppSpecificParams {
+  palletRollCapacity: number
+}
 
+export interface AppSpecificParams {
+  palletRollCapacity: number;
+}
 
-
-export interface ConfigData {
+export interface ConfigDataType {
   /**
    * The name of the environment.
    * @example 'test', 'development', 'staging', 'production'
@@ -63,9 +67,10 @@ export interface ConfigData {
   /**
    * 
    */
-  responseTimeOut: number
+  responseTimeOut: number;
 
-  database: TransactionalDBConfig
-  rateLimiting: RateLimiting
-  jwtConfig: JWTConfigs
+  database: TransactionalDBConfig;
+  rateLimiting: RateLimiting;
+  jwtConfig: JWTConfigs;
+  appSepcific: AppSpecificParams
 }

@@ -1,51 +1,65 @@
+import React, { useEffect, useState } from 'react';
 import { Card, Button, Drawer } from 'antd';
-import { useEffect, useState } from 'react';
 import { ApplicationGrid } from './application-grid';
-import { ApplicationForm, ApplicationModel } from './application-form';
+import { ApplicationForm } from './application-form';
+import { ApplicationService } from '@finestchoicex-iam/shared-services';
+import { GetAllApplicationsDto } from '@finestchoicex-iam/shared-models';
+
+
 
 export const ApplicationPage = () => {
-    const [showForm, setShowForm] = useState(false);
-    const [orgData, setOrgData] = useState<ApplicationModel[]>([]);
-
-    useEffect(() => {
-        getAllOrganisations();
-    }, []);
-
-    const getAllOrganisations = () => {
-        setOrgData([new ApplicationModel(1, 'abx', 'bbs')]);
-    }
+  const [showForm, setShowForm] = useState(false);
+  const [applicationData, setApplicationData] = useState<GetAllApplicationsDto[]>([]);
+  const [initialValues, setInitialValues] = useState<GetAllApplicationsDto>();
+  const [dummyRefresh, setDummyRefresh] = useState<number>(0)
 
 
+  const service = new ApplicationService();
 
-    const submitHandler = (req: ApplicationModel) => {
-        closeButtonHandler();
-        getAllOrganisations();
-    }
+  useEffect(() => {
+    getApplicationsData();
+  }, []);
 
-    const createButtonHandler = () => {
-        setShowForm(true);
-    }
+  const getApplicationsData = () => {
+    service.getAllApplications().then((res) => {
+      if (res.status && res.data) {
+        setApplicationData(res.data);
+      } else {
+        setApplicationData([]);
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  };
 
-    const closeButtonHandler = () => {
-        setShowForm(false);
-    }
-    return (
-        <>
-            <Card title='Clients' extra={<Button onClick={createButtonHandler}>Create</Button>}>
-                <ApplicationGrid data={orgData} />
-            </Card>
-            <Drawer
-                title={'Client'}
-                open={showForm}
-                onClose={closeButtonHandler}
-                width='50%'
-            >
-                <ApplicationForm submitHandler={submitHandler} />
-            </Drawer>
-        </>
-    )
-}
+  const createButtonHandler = () => {
+    setShowForm(true);
+    setDummyRefresh(prev => prev + 1);
 
-export default ApplicationPage
+  };
 
+  const closeButtonHandler = () => {
+    setShowForm(false);
+    setDummyRefresh(prev => prev + 1);
 
+  };
+
+  return (
+    <>
+      <Card title="Applications" extra={<Button onClick={createButtonHandler}>Create</Button>}>
+        <ApplicationGrid setInitialValues={setInitialValues} createButtonHandler={createButtonHandler} applicationData={applicationData} getAllApplicationsData={getApplicationsData} />
+      </Card>
+      <Drawer
+        title="ApplicationForm"
+        open={showForm}
+        onClose={closeButtonHandler}
+        width="50%"
+        key={dummyRefresh}
+      >
+        <ApplicationForm key={dummyRefresh} getAllApplicationsData={getApplicationsData} initialValues={initialValues} closeButtonHandler={closeButtonHandler} />
+      </Drawer>
+    </>
+  );
+};
+
+export default ApplicationPage;

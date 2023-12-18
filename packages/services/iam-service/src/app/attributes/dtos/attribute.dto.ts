@@ -1,8 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class AttributeDto{
+export class AttributeDto {
     @ApiProperty()
-    attributeName:string;
+    attributeName: string;
     @ApiProperty()
-    attributeId:string;
+    attributeId: number;
+    @ApiProperty()
+    versionFlag: number;
 }
