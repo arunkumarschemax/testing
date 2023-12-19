@@ -56,7 +56,8 @@ export const AppRoutes = () => {
                 <Route path='/user-creation' element={<UserPage />} />
                 <Route path='/user-role-mappings' element={<UserRoleMappings />} />
                 <Route path='/role-permissions-mapping' element={<RolePermissionsMapping />} /> */}
-                {getAllRoutes().map(rec => rec)}
+                {/* {getAllRoutes().map(rec => rec)} */}
+                <Route path='app' element={<ApplicationPage />}></Route>
             </Route>
             <Route path="/login" element={<></>} />
         </Routes>

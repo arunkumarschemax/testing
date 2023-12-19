@@ -19,118 +19,128 @@ const { SubMenu } = Menu;
 
 export const availableRoutes: any[] = [
     {
-        path: '/attribute',
+        path: '/app',
         key: '/attribute',
-        title: 'Attributes',
+        title: 'app',
         icon: <antdIcons.HomeOutlined />,
         component: <AttributePage />,
     },
-    {
-        path: '/applications',
-        key: '/applications',
-        title: 'Applications',
-        icon: <antdIcons.HomeOutlined />,
-        component: <ApplicationPage />,
-    },
-    {
-        path: '/modules',
-        key: '/modules',
-        title: 'Modules',
-        icon: <antdIcons.HomeOutlined />,
-        component: <ModulePage />,
-    },
-    {
-        path: '/menu',
-        key: '/menu',
-        title: 'Menu',
-        icon: <antdIcons.HomeOutlined />,
-        component: <MenuPage />,
-    },
-    {
-        path: '/sub-menu',
-        key: '/sub-menu',
-        title: 'Sub-Menu',
-        icon: <antdIcons.HomeOutlined />,
-        component: <SubMenuPage />,
-    },
-    {
-        path: '/scopes',
-        key: '/scopes',
-        title: 'Scopes',
-        icon: <antdIcons.HomeOutlined />,
-        component: <ScopePage />,
-    },
-    {
-        path: '/permissions',
-        key: '/permissions',
-        title: 'Permissions',
-        icon: <antdIcons.HomeOutlined />,
-        component: <PermissionsPage />,
-    },
+
+
+    // {
+    //     path: '/attribute',
+    //     key: '/attribute',
+    //     title: 'Attributes',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <AttributePage />,
+    // },
+
+    // {
+    //     path: '/applications',
+    //     key: '/applications',
+    //     title: 'Applications',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <ApplicationPage />,
+    // },
+    // {
+    //     path: '/modules',
+    //     key: '/modules',
+    //     title: 'Modules',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <ModulePage />,
+    // },
+    // {
+    //     path: '/menu',
+    //     key: '/menu',
+    //     title: 'Menu',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <MenuPage />,
+    // },
+    // {
+    //     path: '/sub-menu',
+    //     key: '/sub-menu',
+    //     title: 'Sub-Menu',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <SubMenuPage />,
+    // },
+    // {
+    //     path: '/scopes',
+    //     key: '/scopes',
+    //     title: 'Scopes',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <ScopePage />,
+    // },
+    // {
+    //     path: '/permissions',
+    //     key: '/permissions',
+    //     title: 'Permissions',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <PermissionsPage />,
+    // },
     // {
     //     path: '/profile',
     //     title: 'Profile',
     //     icon: <antdIcons.HomeOutlined />,
     //     component: <PermissionsPage />,
     // },
-    {
-        path: '/client',
-        key: '/client',
-        title: 'Client',
-        icon: <antdIcons.HomeOutlined />,
-        component: <OrganizationPage />,
-    },
-    {
-        path: '/clientToApplicationMapping',
-        key: '/clientToApplicationMapping',
-        title: 'Client-Application',
-        icon: <antdIcons.HomeOutlined />,
-        component: <ClientToApplicationsMapping />,
-    },
-    {
-        path: '/client-menu',
-        key: '/client-menu',
-        title: 'Client Menu',
-        icon: <antdIcons.HomeOutlined />,
-        component: <> </>,
-        children: [
-            {
-                path: '/units',
-                key: '/units',
-                title: 'Units',
-                icon: <antdIcons.HomeOutlined />,
-                component: <UnitPage />,
-            },
-            {
-                path: '/roles',
-                key: '/roles',
-                title: 'Roles',
-                icon: <antdIcons.HomeOutlined />,
-                component: <RolesPage />,
-            },
-            {
-                path: '/user-creation',
-                key: '/user-creation',
-                title: 'User',
-                icon: <antdIcons.HomeOutlined />,
-                component: <UserPage />,
-            },
-            {
-                path: '/user-role-mappings',
-                key: '/user-role-mappings',
-                title: 'User Role Mapping',
-                icon: <antdIcons.HomeOutlined />,
-                component: <UserRoleMappings />,
-            },
-            {
-                path: '/role-permissions-mapping',
-                key: '/role-permissions-mapping',
-                title: 'Role Permissions Mapping',
-                icon: <antdIcons.HomeOutlined />,
-                component: <RolePermissionsMapping />,
-            },
-        ]
-    }
+    // {
+    //     path: '/client',
+    //     key: '/client',
+    //     title: 'Client',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <OrganizationPage />,
+    // },
+    // {
+    //     path: '/clientToApplicationMapping',
+    //     key: '/clientToApplicationMapping',
+    //     title: 'Client-Application',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <ClientToApplicationsMapping />,
+    // },
+    // {
+    //     path: '/client-menu',
+    //     key: '/client-menu',
+    //     title: 'Client Menu',
+    //     icon: <antdIcons.HomeOutlined />,
+    //     component: <> </>,
+    //     children: [
+    //         {
+    //             path: '/units',
+    //             key: '/units',
+    //             title: 'Units',
+    //             icon: <antdIcons.HomeOutlined />,
+    //             component: <UnitPage />,
+    //         },
+    //         {
+    //             path: '/roles',
+    //             key: '/roles',
+    //             title: 'Roles',
+    //             icon: <antdIcons.HomeOutlined />,
+    //             component: <RolesPage />,
+    //         },
+    //         {
+    //             path: '/user-creation',
+    //             key: '/user-creation',
+    //             title: 'User',
+    //             icon: <antdIcons.HomeOutlined />,
+    //             component: <UserPage />,
+    //         },
+    //         {
+    //             path: '/user-role-mappings',
+    //             key: '/user-role-mappings',
+    //             title: 'User Role Mapping',
+    //             icon: <antdIcons.HomeOutlined />,
+    //             component: <UserRoleMappings />,
+    //         },
+    //         {
+    //             path: '/role-permissions-mapping',
+    //             key: '/role-permissions-mapping',
+    //             title: 'Role Permissions Mapping',
+    //             icon: <antdIcons.HomeOutlined />,
+    //             component: <RolePermissionsMapping />,
+    //         },
+    //     ]
+    // }
 ];
 
 

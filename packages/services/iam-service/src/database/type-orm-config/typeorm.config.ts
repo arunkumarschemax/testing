@@ -11,12 +11,12 @@ import { AuthenticationSubscriber } from '../../app/authentications/subscribers/
 
 const databaseConfig = configuration().database;
 export const typeOrmConfig: DataSourceOptions = {
-  type: databaseConfig.type,
-  host: databaseConfig.host,
-  port: databaseConfig.port,
-  username: databaseConfig.username,
-  password: databaseConfig.password,
-  database: databaseConfig.dbName,
+  type: 'mysql',
+  host: 'localhost',
+  port: +'3306',
+  username: 'root',
+  password: '',
+  database: 'finest_choicex_iam',
   timezone: 'Z',
   migrations: ['dist/database/migrations/*.js*{.ts,.js}'],
   extra: {
