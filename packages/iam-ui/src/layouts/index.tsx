@@ -11,6 +11,7 @@ import { useAuthState } from '../common/auth-context';
 import { CommonHeader } from '../common/header-nav-component/header-nav-component';
 import { ApplicationPage, AttributePage, ClientToApplicationsMapping, MenuPage, ModulePage, OrganizationPage, PermissionsPage, RolePermissionsMapping, RolesPage, ScopePage, SubMenuPage, UnitPage, UserPage, UserRoleMappings } from '../components';
 import './BasicLayout.css';
+import { DynamicForm } from '../components/dynamic/dynamic-form';
 
 
 
@@ -24,6 +25,13 @@ export const availableRoutes: any[] = [
         title: 'app',
         icon: <antdIcons.HomeOutlined />,
         component: <AttributePage />,
+    },
+    {
+        path: '/dynamic',
+        key: '/attribute',
+        title: 'Dynamic',
+        icon: <antdIcons.HomeOutlined />,
+        component: <DynamicForm />,
     },
 
 

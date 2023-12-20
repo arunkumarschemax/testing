@@ -9,6 +9,7 @@ import { SecuritySettings } from '../common/component-lib/layouts/profile/profil
 import { Notifications } from '../common/component-lib/layouts/profile/profileCard/profileFormNav/nav/notifications/Notifications/Notifications';
 import { UserRoleMappings } from '../components/user-role-mapping';
 import ClientToApplicationsMapping from '../components/client-applications-mapping/client-to-applications-mapping';
+import { DynamicForm } from '../components/dynamic/dynamic-form';
 
 
 export const AppRoutes = () => {
@@ -26,7 +27,7 @@ export const AppRoutes = () => {
             subMenus.push(abc);
         });
         return subMenus;
-    }
+    }  
     return (
         <Routes>
             <Route path='/' element={
@@ -58,6 +59,7 @@ export const AppRoutes = () => {
                 <Route path='/role-permissions-mapping' element={<RolePermissionsMapping />} /> */}
                 {/* {getAllRoutes().map(rec => rec)} */}
                 <Route path='app' element={<ApplicationPage />}></Route>
+                <Route path='dynamic' element={<DynamicForm />}></Route>
             </Route>
             <Route path="/login" element={<></>} />
         </Routes>
