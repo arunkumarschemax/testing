@@ -32,7 +32,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
       synchronize: false,
       logging: false,
       subscribers: [AuthenticationSubscriber],
-      //namingStrategy: new SnakeNamingStrategy(),
+      namingStrategy: new SnakeNamingStrategy(),
       //logger: new QueryLogger(new PinoLogger({ pinoHttp: { level: configService.get().logLevel } })),
       autoLoadEntities: true
     }

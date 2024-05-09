@@ -1,5 +1,7 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import configuration from '../config/configuration';
 import { DatabaseModule } from '../database';
 import { AppController } from './app.controller';
@@ -21,12 +23,25 @@ import { UserPermissionsModule } from './user-permissions/user-permissions.modul
 import { UserRolesModule } from './user-roles/user-roles.module';
 import { UserToAttributesModule } from './user-to-attributes/user-to-attributes.module';
 import { UsersModule } from './users/users.module';
+import { middlewareHandler } from './middleware';
+import { snakeCase } from 'typeorm/util/StringUtils';
 
+
+const fullPath = __dirname;
+const newPath = fullPath.replace(/\\dist/, ''); // Using double backslashes to escape the backslash
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+    }),
+    ServeStaticModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: () => ([{
+        rootPath: join(newPath, 'files', ''),  //http://localhost:8006/2023-06-15%20(1).png
+        // serveRoot: "/extraPath/"    // last slash was important  http://localhost:8006/extraPath/2023-06-15%20(1).png
+      }])
     }),
     DatabaseModule,
     AttributesModule,
@@ -50,4 +65,8 @@ import { UsersModule } from './users/users.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule implements NestModule{
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(middlewareHandler).forRoutes({path:'*/getData*',method:RequestMethod.POST})
+  }
+}

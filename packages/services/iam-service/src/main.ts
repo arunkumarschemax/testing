@@ -21,7 +21,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ validationError: { target: false }, transform: true, forbidUnknownValues: false }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
   app.useGlobalInterceptors(new LoggingInterceptor());
-console.log(configService.get('env') === 'development','*&*^&*(&*(')
+  console.log(configService.get('env') === 'development', '*&*^&*(&*(')
   if (configService.get('env') === 'development') {
     createDocument(app);
   }

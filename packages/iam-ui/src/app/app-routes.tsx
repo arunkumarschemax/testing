@@ -10,6 +10,7 @@ import { Notifications } from '../common/component-lib/layouts/profile/profileCa
 import { UserRoleMappings } from '../components/user-role-mapping';
 import ClientToApplicationsMapping from '../components/client-applications-mapping/client-to-applications-mapping';
 import { DynamicForm } from '../components/dynamic/dynamic-form';
+import ExcelExtraction from '../global-componenets/excel-extraction';
 
 
 export const AppRoutes = () => {
@@ -60,6 +61,7 @@ export const AppRoutes = () => {
                 {/* {getAllRoutes().map(rec => rec)} */}
                 <Route path='app' element={<ApplicationPage />}></Route>
                 <Route path='dynamic' element={<DynamicForm />}></Route>
+                <Route path='excel' element={<ExcelExtraction />}></Route>
             </Route>
             <Route path="/login" element={<></>} />
         </Routes>

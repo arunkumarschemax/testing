@@ -11,8 +11,12 @@
     "target": "es2015",
     "module": "esnext",
     "lib": [
-      "es2020",
-      "dom"
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es5",
+      "es6",
+      "es2017"
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,

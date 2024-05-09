@@ -12,6 +12,7 @@ import { CommonHeader } from '../common/header-nav-component/header-nav-componen
 import { ApplicationPage, AttributePage, ClientToApplicationsMapping, MenuPage, ModulePage, OrganizationPage, PermissionsPage, RolePermissionsMapping, RolesPage, ScopePage, SubMenuPage, UnitPage, UserPage, UserRoleMappings } from '../components';
 import './BasicLayout.css';
 import { DynamicForm } from '../components/dynamic/dynamic-form';
+import ExcelExtraction from '../global-componenets/excel-extraction';
 
 
 
@@ -32,6 +33,13 @@ export const availableRoutes: any[] = [
         title: 'Dynamic',
         icon: <antdIcons.HomeOutlined />,
         component: <DynamicForm />,
+    },
+    {
+        path: '/excel',
+        key: '/attribute',
+        title: 'Excel',
+        icon: <antdIcons.HomeOutlined />,
+        component: <ExcelExtraction />,
     },
 
 
